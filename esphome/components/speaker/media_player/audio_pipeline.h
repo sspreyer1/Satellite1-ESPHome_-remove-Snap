@@ -58,20 +58,15 @@ struct InfoErrorEvent {
 
 class AudioPipeline {
  public:
-  AudioPipeline(speaker::Speaker *speaker, size_t buffer_size, bool task_stack_in_psram, std::string base_name,
-                UBaseType_t priority);
+  AudioPipeline(speaker::Speaker *speaker, size_t buffer_size, bool task_stack_in_psram,
+                std::string base_name, UBaseType_t priority);
 
   void start_url(const std::string &uri);
   void start_file(audio::AudioFile *audio_file);
-
   esp_err_t stop();
   AudioPipelineState process_state();
-
   void suspend_tasks();
   void resume_tasks();
-
-  uint32_t get_playback_ms() { return this->playback_ms_; }
-  void set_pause_state(bool pause_state);
 
  protected:
   esp_err_t allocate_communications_();
@@ -80,6 +75,7 @@ class AudioPipeline {
 
   std::string base_name_;
   UBaseType_t priority_;
+
   uint32_t playback_ms_{0};
   bool hard_stop_{false};
   bool is_playing_{false};
@@ -88,18 +84,15 @@ class AudioPipeline {
 
   bool pending_url_{false};
   bool pending_file_{false};
-
   speaker::Speaker *speaker_{nullptr};
 
   std::string current_uri_{};
   audio::AudioFile *current_audio_file_{nullptr};
-
   audio::AudioFileType current_audio_file_type_;
   audio::AudioStreamInfo current_audio_stream_info_;
 
   size_t buffer_size_;
   size_t transfer_buffer_size_;
-
   std::shared_ptr<audio::TimedRingBuffer> reader_output_rb_;
 
   EventGroupHandle_t event_group_{nullptr};
